@@ -8,8 +8,9 @@
 ```
 config:
   in_tpl: proto.tpl
-  out_dir: data/message
-  out_pb: data/pb;v1;
+  out_dir: ../db/data
+  go_package: db/data;data
+  package: db.data;
 db:
   db_name: data
   db_tables: []
@@ -25,7 +26,8 @@ db:
 - `config.in_tpl` 指定了需要生成的pb文件模板。
     > 这使得我们可以灵活的定制生成pb文件的内容,针对不同的项目，可以使用不同的模板
 - `config.out_dir` 指定了输出pb文件的路径
-- `config.out_pb` 指定了protoc生成后的路径
+- `config.go_package` 指定了protoc生成后的路径
+- `config.package` 指定pb的包名称
 
 项目参考
 - https://github.com/guyan0319/mysql-to-proto
