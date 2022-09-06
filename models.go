@@ -4,6 +4,7 @@ package main
 type Message struct {
 	Name          string
 	Package string
+	GoPackage string
 	MessageDetail []TableFied
 }
 type Field struct {

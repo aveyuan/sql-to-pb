@@ -1,7 +1,8 @@
 config:
   in_tpl: proto.tpl
-  out_dir: data/message
-  out_pb: data/pb;v1;
+  out_dir: ../db/data
+  go_package: db/data;data
+  package: db.data;
 db:
   db_name: data
   db_tables: []

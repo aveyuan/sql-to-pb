@@ -1,5 +1,8 @@
 syntax = "proto3";
-option go_package = "{{.Package}}";
+
+package {{.Package}}
+
+option go_package = "{{.GoPackage}}";
 
 message {{.Name}} {
 {{range .MessageDetail}} {{.Type}} {{.Name}} = {{.Num}} [json_name = "{{.Name}}"];

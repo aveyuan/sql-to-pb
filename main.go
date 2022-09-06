@@ -18,7 +18,8 @@ var DBName string
 var OutDir string
 var InTpl string
 var Tables []string
-var OutPb string
+var GoPackage string
+var Package string
 
 func init() {
 	viper.SetConfigFile("config.yml")
@@ -32,14 +33,16 @@ func init() {
 	if OutDir == "" {
 		OutDir = "message"
 	}
-	OutPb = viper.GetString("config.out_pb")
-	if OutPb == "" {
-		OutPb = "pb"
+	GoPackage = viper.GetString("config.go_package")
+	if GoPackage == "" {
+		GoPackage = OutDir
 	}	
 	InTpl = viper.GetString("config.in_tpl")
 	if InTpl == "" {
 		InTpl = "proto.tpl"
 	}
+	Package = viper.GetString("config.package")
+
 	Tables = viper.GetStringSlice("db.db_tables")
 }
 
@@ -105,7 +108,8 @@ func Genarate(dir string, all []Message) {
 		if err != nil {
 			log.Fatal(err)
 		}
-		v.Package = OutPb
+		v.GoPackage = GoPackage
+		v.Package = Package
 		err = tmpl.Execute(file, v)
 		if err != nil {
 			log.Fatal(err)
@@ -133,7 +137,7 @@ func GetTables(dbName string) []string {
 }
 
 func GetStruct(dbTable, dbName string) []TableFied {
-	rows, err := DB.Query("SELECT c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT FROM information_schema.TABLES t,INFORMATION_SCHEMA.Columns c WHERE c.TABLE_NAME=t.TABLE_NAME AND c.TABLE_NAME in ('" + dbTable + "') AND t.`TABLE_SCHEMA`='" + dbName + "'")
+	rows, err := DB.Query("SELECT c.COLUMN_NAME,c.COLUMN_TYPE,c.COLUMN_COMMENT FROM INFORMATION_SCHEMA.Columns c WHERE c.`TABLE_SCHEMA`='" + dbName + "' AND c.TABLE_NAME = '" + dbTable + "' ORDER BY c.ORDINAL_POSITION" )
 	if err != nil {
 		log.Fatal(err)
 	}
